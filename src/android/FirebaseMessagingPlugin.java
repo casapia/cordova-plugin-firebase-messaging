@@ -48,17 +48,6 @@ public class FirebaseMessagingPlugin extends ReflectiveCordovaPlugin {
     private FirebaseMessaging firebaseMessaging;
     private CallbackContext requestPermissionCallback;
 
-    private final ActivityResultLauncher<String> requestPermissionLauncher = cordova.getActivity()
-            .registerForActivityResult(
-                    new ActivityResultContracts.RequestPermission(), isGranted -> {
-                        if (isGranted) {
-                            // FCM SDK (and your app) can post notifications.
-                            requestPermissionCallback.success();
-                        } else {
-                            requestPermissionCallback.error("Notifications permission is not granted");
-                        }
-                    });
-
     @Override
     protected void pluginInitialize() {
         FirebaseMessagingPlugin.instance = this;
@@ -156,7 +145,6 @@ public class FirebaseMessagingPlugin extends ReflectiveCordovaPlugin {
                 if (cordova.hasPermission(Manifest.permission.POST_NOTIFICATIONS))
                     return;
                 requestPermissionCallback = callbackContext;
-                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
             } else {
                 callbackContext.error("Notifications permission is not granted");
             }
