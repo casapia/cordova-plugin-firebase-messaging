@@ -61,7 +61,7 @@
     </platform>
 
     <platform name="android">
-        <preference name="ANDROID_FIREBASE_BOM_VERSION" default="31.4.0" />
+        <preference name="ANDROID_FIREBASE_BOM_VERSION" default="31.0.2" />
 
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="FirebaseMessaging">
@@ -93,6 +93,7 @@
         <framework src="platform('com.google.firebase:firebase-bom:$ANDROID_FIREBASE_BOM_VERSION')" />
         <framework src="com.google.firebase:firebase-messaging" />
         <framework src="me.leolin:ShortcutBadger:1.1.22@aar" />
+        <framework src="androidx.activity:activity:1.6.1" />
 
         <source-file src="src/android/FirebaseMessagingPlugin.java"
             target-dir="src/by/chemerisuk/cordova/firebase/" />
