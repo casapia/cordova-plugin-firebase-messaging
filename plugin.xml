@@ -75,9 +75,6 @@
             <preference name="AndroidXEnabled" value="true" />
             <preference name="GradlePluginGoogleServicesEnabled" value="true" />
             <preference name="GradlePluginGoogleServicesVersion" value="4.3.15" />
-            <!-- <preference name="GradlePluginKotlinEnabled" value="true" />
-            <preference name="GradlePluginKotlinCodeStyle" value="official" />
-            <preference name="GradlePluginKotlinVersion" value="1.8.20" /> -->
         </config-file>
 
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
@@ -96,10 +93,6 @@
         <framework src="platform('com.google.firebase:firebase-bom:$ANDROID_FIREBASE_BOM_VERSION')" />
         <framework src="com.google.firebase:firebase-messaging" />
         <framework src="me.leolin:ShortcutBadger:1.1.22@aar" />
-        <!-- <framework src="androidx.activity:activity:1.7.0" />
-        <framework src="androidx.fragment:fragment:1.5.6" /> -->
-        <framework src="androidx.activity:activity:1.6.1" />
-        <framework src="androidx.fragment:fragment:1.5.4" />
 
         <source-file src="src/android/FirebaseMessagingPlugin.java"
             target-dir="src/by/chemerisuk/cordova/firebase/" />
