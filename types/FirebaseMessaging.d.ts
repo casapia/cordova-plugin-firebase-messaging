@@ -126,6 +126,28 @@ export function requestPermission(options: {
 }): Promise<void>;
 /**
  *
+ * Ask for permission to recieve push notifications
+ * @returns {Promise<number>} Promise fulfiled with the current permission value
+ *
+ * @example
+ * cordova.plugins.firebase.messaging.areNotificationsEnabled().then(function(value) {
+ *     console.log("Permission value: ", value);
+ * });
+ */
+export function areNotificationsEnabled(): Promise<number>;
+/**
+ * ANDROID ONLY
+ * Ask for shouldShowRequestPermissionRationale() method to recieve push notifications
+ * @returns {Promise<boolean>} Promise fulfiled with the current shouldShowRequestPermissionRationale value
+ *
+ * @example
+ * cordova.plugins.firebase.messaging.shouldShowRequestPermissionRationale().then(function(value) {
+ *     console.log("shouldShowRequestPermissionRationale value: ", value);
+ * });
+ */
+export function shouldShowRequestPermissionRationale(): Promise<boolean>;
+/**
+ *
  * In general (for both platforms) you can only rely on custom data fields.
  *
  * `message_id` and `sent_time` have `google.` prefix in property name (__will be fixed__).

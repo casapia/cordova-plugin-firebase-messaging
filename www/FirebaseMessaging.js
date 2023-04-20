@@ -205,3 +205,38 @@ function(options) {
         exec(resolve, reject, PLUGIN_NAME, "requestPermission", [options || {}]);
     });
 };
+
+
+exports.areNotificationsEnabled =
+/**
+ *
+ * Ask for permission to recieve push notifications
+ * @returns {Promise<number>} Promise fulfiled with the current permission value
+ *
+ * @example
+ * cordova.plugins.firebase.messaging.areNotificationsEnabled().then(function(value) {
+ *     console.log("Permission value: ", value);
+ * });
+ */
+function() {
+    return new Promise(function(resolve, reject) {
+        exec(resolve, reject, PLUGIN_NAME, "areNotificationsEnabled", []);
+    });
+};
+
+exports.shouldShowRequestPermissionRationale =
+/**
+ * ANDROID ONLY
+ * Ask for shouldShowRequestPermissionRationale() method to recieve push notifications
+ * @returns {Promise<boolean>} Promise fulfiled with the current shouldShowRequestPermissionRationale value
+ *
+ * @example
+ * cordova.plugins.firebase.messaging.shouldShowRequestPermissionRationale().then(function(value) {
+ *     console.log("shouldShowRequestPermissionRationale value: ", value);
+ * });
+ */
+function() {
+    return new Promise(function(resolve, reject) {
+        exec(resolve, reject, PLUGIN_NAME, "shouldShowRequestPermissionRationale", []);
+    });
+};
