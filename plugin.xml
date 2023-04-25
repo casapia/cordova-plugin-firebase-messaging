@@ -38,6 +38,9 @@
                 <string>remote-notification</string>
             </array>
         </config-file>
+        <config-file target="*-Info.plist" parent="FirebaseMessagingAutoInitEnabled">
+            <string>NO</string>
+        </config-file>
         <config-file target="*-Debug.plist" parent="aps-environment">
             <string>development</string>
         </config-file>
