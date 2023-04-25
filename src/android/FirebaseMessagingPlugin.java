@@ -175,28 +175,6 @@ public class FirebaseMessagingPlugin extends ReflectiveCordovaPlugin {
         }
     }
 
-    @CordovaMethod(WORKER)
-    private void isAutoInitEnabled(final CallbackContext callbackContext) {
-        try {
-            boolean isEnabled = FirebaseMessaging.getInstance().isAutoInitEnabled();
-            callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, isEnabled));
-        } catch (Exception e) {
-            callbackContext.error(e.getMessage());
-        }
-    }
-
-    @CordovaMethod(WORKER)
-    private void setAutoInitEnabled(final CallbackContext callbackContext, final boolean enabled) {
-        // final FirebasePlugin self = this;
-        try {
-            FirebaseMessaging.getInstance().setAutoInitEnabled(enabled);
-            callbackContext.success();
-        } catch (Exception e) {
-            e.printStackTrace();
-            callbackContext.error(e.getMessage());
-        }
-    }
-
     protected void requestPermissions(CordovaPlugin plugin, int requestCode, String[] permissions) throws Exception {
         try {
             java.lang.reflect.Method method = cordova.getClass().getMethod("requestPermissions",

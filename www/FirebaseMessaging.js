@@ -240,17 +240,3 @@ exports.shouldShowRequestPermissionRationale =
             exec(resolve, reject, PLUGIN_NAME, "shouldShowRequestPermissionRationale", []);
         });
     };
-
-exports.isAutoInitEnabled =
-    function () {
-        return new Promise(function (resolve, reject) {
-            exec(resolve, reject, PLUGIN_NAME, "isAutoInitEnabled", []);
-        });
-    };
-
-exports.setAutoInitEnabled =
-    function (enabled) {
-        return new Promise(function (resolve, reject) {
-            exec(resolve, reject, PLUGIN_NAME, "setAutoInitEnabled", [!!enabled]);
-        });
-    };
