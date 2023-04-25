@@ -146,6 +146,9 @@ export function areNotificationsEnabled(): Promise<number>;
  * });
  */
 export function shouldShowRequestPermissionRationale(): Promise<boolean>;
+
+export function isAutoInitEnabled(): Promise<boolean>;
+export function setAutoInitEnabled(enabled: boolean): Promise<void>;
 /**
  *
  * In general (for both platforms) you can only rely on custom data fields.

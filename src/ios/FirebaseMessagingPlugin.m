@@ -15,6 +15,21 @@
     }
 }
 
+- (void)isAutoInitEnabled:(CDVInvokedUrlCommand *)command {
+    bool enabled =[FIRMessaging messaging].isAutoInitEnabled;
+
+    CDVPluginResult *commandResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:enabled];
+    [self.commandDelegate sendPluginResult:commandResult callbackId:command.callbackId];
+}
+
+- (void)setAutoInitEnabled:(CDVInvokedUrlCommand *)command {
+    bool enabled = [[command.arguments objectAtIndex:0] boolValue];
+    [FIRMessaging messaging].autoInitEnabled = enabled;
+
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
 - (void)requestPermission:(CDVInvokedUrlCommand *)command {
     NSDictionary* options = [command.arguments objectAtIndex:0];
 
