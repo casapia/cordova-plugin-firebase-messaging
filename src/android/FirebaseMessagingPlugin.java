@@ -28,6 +28,7 @@ import org.apache.cordova.CordovaArgs;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.PluginResult;
+import org.apache.cordova.CordovaPlugin;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -159,6 +160,9 @@ public class FirebaseMessagingPlugin extends ReflectiveCordovaPlugin {
         if (NotificationManagerCompat.from(context).areNotificationsEnabled()) {
             Log.d(TAG, "The user has already granted notification permissions");
             callbackContext.success();
+        } else if (Build.VERSION.SDK_INT >= 33) {
+            requestPermissionCallback = callbackContext;
+            PermissionHelper.requestPermission(this, 0, Manifest.permission.POST_NOTIFICATIONS);
         } else {
             try {
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
@@ -180,6 +184,7 @@ public class FirebaseMessagingPlugin extends ReflectiveCordovaPlugin {
                 callbackContext.error("Notifications permission is not granted");
             }
         }
+        requestPermissionCallback.success();
     }
 
     @CordovaMethod(WORKER)
