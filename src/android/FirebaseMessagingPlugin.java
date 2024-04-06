@@ -20,6 +20,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -39,21 +40,77 @@ import me.leolin.shortcutbadger.ShortcutBadger;
 
 public class FirebaseMessagingPlugin extends ReflectiveCordovaPlugin {
     private static final String TAG = "FCMPlugin";
-
+    private static FirebaseMessagingPlugin instance;
     private JSONObject lastBundle;
     private boolean isBackground = false;
     private boolean forceShow = false;
     private CallbackContext tokenRefreshCallback;
     private CallbackContext foregroundCallback;
     private CallbackContext backgroundCallback;
-    private static FirebaseMessagingPlugin instance;
     private NotificationManager notificationManager;
     private FirebaseMessaging firebaseMessaging;
     private CallbackContext requestPermissionCallback;
     private ActivityResultLauncher<String> requestPermissionLauncher;
 
+    static void sendNotification(RemoteMessage remoteMessage) {
+        JSONObject notificationData = new JSONObject(remoteMessage.getData());
+        RemoteMessage.Notification notification = remoteMessage.getNotification();
+        try {
+            if (notification != null) {
+                notificationData.put("gcm", toJSON(notification));
+            }
+            notificationData.put("google.message_id", remoteMessage.getMessageId());
+            notificationData.put("google.sent_time", remoteMessage.getSentTime());
+
+            if (instance != null) {
+                CallbackContext callbackContext = instance.isBackground ? instance.backgroundCallback
+                        : instance.foregroundCallback;
+                instance.sendNotification(notificationData, callbackContext);
+            }
+        } catch (JSONException e) {
+            Log.e(TAG, "sendNotification", e);
+        }
+    }
+
+    static void sendToken(String instanceId) {
+        if (instance != null) {
+            if (instance.tokenRefreshCallback != null && instanceId != null) {
+                PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, instanceId);
+                pluginResult.setKeepCallback(true);
+                instance.tokenRefreshCallback.sendPluginResult(pluginResult);
+            }
+        }
+    }
+
+    static boolean isForceShow() {
+        return instance != null && instance.forceShow;
+    }
+
+    private static JSONObject toJSON(RemoteMessage.Notification notification) throws JSONException {
+        JSONObject result = new JSONObject()
+                .put("body", notification.getBody())
+                .put("title", notification.getTitle())
+                .put("sound", notification.getSound())
+                .put("icon", notification.getIcon())
+                .put("tag", notification.getTag())
+                .put("color", notification.getColor())
+                .put("clickAction", notification.getClickAction());
+
+        Uri imageUri = notification.getImageUrl();
+        if (imageUri != null) {
+            result.put("imageUrl", imageUri.toString());
+        }
+
+        return result;
+    }
+
     @Override
     protected void pluginInitialize() {
+        // Initialize FirebaseApp
+        Context context = this.cordova.getActivity().getApplicationContext();
+        if (!FirebaseApp.getApps(context).isEmpty()) {
+            FirebaseApp.initializeApp(context);
+        }
         FirebaseMessagingPlugin.instance = this;
 
         firebaseMessaging = FirebaseMessaging.getInstance();
@@ -229,40 +286,6 @@ public class FirebaseMessagingPlugin extends ReflectiveCordovaPlugin {
         this.isBackground = false;
     }
 
-    static void sendNotification(RemoteMessage remoteMessage) {
-        JSONObject notificationData = new JSONObject(remoteMessage.getData());
-        RemoteMessage.Notification notification = remoteMessage.getNotification();
-        try {
-            if (notification != null) {
-                notificationData.put("gcm", toJSON(notification));
-            }
-            notificationData.put("google.message_id", remoteMessage.getMessageId());
-            notificationData.put("google.sent_time", remoteMessage.getSentTime());
-
-            if (instance != null) {
-                CallbackContext callbackContext = instance.isBackground ? instance.backgroundCallback
-                        : instance.foregroundCallback;
-                instance.sendNotification(notificationData, callbackContext);
-            }
-        } catch (JSONException e) {
-            Log.e(TAG, "sendNotification", e);
-        }
-    }
-
-    static void sendToken(String instanceId) {
-        if (instance != null) {
-            if (instance.tokenRefreshCallback != null && instanceId != null) {
-                PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, instanceId);
-                pluginResult.setKeepCallback(true);
-                instance.tokenRefreshCallback.sendPluginResult(pluginResult);
-            }
-        }
-    }
-
-    static boolean isForceShow() {
-        return instance != null && instance.forceShow;
-    }
-
     private void sendNotification(JSONObject notificationData, CallbackContext callbackContext) {
         if (callbackContext != null) {
             PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, notificationData);
@@ -293,23 +316,5 @@ public class FirebaseMessagingPlugin extends ReflectiveCordovaPlugin {
             Log.e(TAG, "getNotificationData", e);
             return null;
         }
-    }
-
-    private static JSONObject toJSON(RemoteMessage.Notification notification) throws JSONException {
-        JSONObject result = new JSONObject()
-                .put("body", notification.getBody())
-                .put("title", notification.getTitle())
-                .put("sound", notification.getSound())
-                .put("icon", notification.getIcon())
-                .put("tag", notification.getTag())
-                .put("color", notification.getColor())
-                .put("clickAction", notification.getClickAction());
-
-        Uri imageUri = notification.getImageUrl();
-        if (imageUri != null) {
-            result.put("imageUrl", imageUri.toString());
-        }
-
-        return result;
     }
 }

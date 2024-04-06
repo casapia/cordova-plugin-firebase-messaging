@@ -44,16 +44,6 @@ public class FirebaseMessagingPluginService extends FirebaseMessagingService {
     public void onCreate() {
         broadcastManager = LocalBroadcastManager.getInstance(this);
         notificationManager = ContextCompat.getSystemService(this, NotificationManager.class);
-        try {
-            ApplicationInfo ai = getPackageManager().getApplicationInfo(getApplicationContext().getPackageName(), PackageManager.GET_META_DATA);
-            defaultNotificationIcon = ai.metaData.getInt(NOTIFICATION_ICON_KEY, ai.icon);
-            defaultNotificationChannel = ai.metaData.getString(NOTIFICATION_CHANNEL_KEY, "default");
-            defaultNotificationColor = ContextCompat.getColor(this, ai.metaData.getInt(NOTIFICATION_COLOR_KEY));
-        } catch (PackageManager.NameNotFoundException e) {
-            Log.d(TAG, "Failed to load meta-data", e);
-        } catch(Resources.NotFoundException e) {
-            Log.d(TAG, "Failed to load notification color", e);
-        }
         // On Android O or greater we need to create a new notification channel
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel defaultChannel = notificationManager.getNotificationChannel(defaultNotificationChannel);
