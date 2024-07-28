@@ -1,7 +1,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="cordova-plugin-firebase-messaging"
-    version="8.0.1">
+    version="8.0.1-NTL4">
 
     <name>FirebaseMessagingPlugin</name>
     <description>Cordova plugin for Firebase Cloud Messaging</description>
@@ -23,7 +23,7 @@
     <dependency id="cordova-outsystems-firebase-core"
         url="https://github.com/OutSystems/cordova-outsystems-firebase-core.git#1.0.1" />
     <dependency id="cordova-plugin-firebase-analytics"
-        url="https://github.com/casapia/cordova-plugin-firebase-analytics#dev" />
+        url="https://github.com/casapia/cordova-plugin-firebase-analytics#NTL4" />
 
     <platform name="ios">
         <preference name="IOS_FIREBASE_POD_VERSION" default="~> 10.29.0" />
