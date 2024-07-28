@@ -23,7 +23,7 @@
     <dependency id="cordova-outsystems-firebase-core"
         url="https://github.com/OutSystems/cordova-outsystems-firebase-core.git#1.0.1" />
     <dependency id="cordova-plugin-firebase-analytics"
-        url="https://github.com/casapia/cordova-plugin-firebase-analytics#NTL4" />
+        url="https://bitbucket.org/appentel_cl/cordova-plugin-firebase-analytics#NTL4" />
 
     <platform name="ios">
         <preference name="IOS_FIREBASE_POD_VERSION" default="~> 10.29.0" />
