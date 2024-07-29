@@ -63,7 +63,7 @@
     </platform>
 
     <platform name="android">
-        <preference name="ANDROID_FIREBASE_BOM_VERSION" default="32.8.0" />
+        <preference name="ANDROID_FIREBASE_BOM_VERSION" default="33.1.2" />
 
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="FirebaseMessaging">
